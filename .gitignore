@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+# Generated artifacts (figures + cached data) — re-creatable, not committed.
+data/*.csv
+data/SOURCE.txt
+figures/
+*.png
+!docs/**/*.png
