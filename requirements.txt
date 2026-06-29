@@ -1,0 +1,11 @@
+# quant-101 — pinned to the scientific stack used to author & verify the notebooks.
+# Install: pip install -r requirements.txt
+numpy>=1.26
+scipy>=1.11
+pandas>=2.0
+matplotlib>=3.7
+statsmodels>=0.14
+yfinance>=0.2        # only needed if you re-fetch the real ^TWII series
+jupytext>=1.16       # to turn the *.py cell-scripts into .ipynb notebooks
+# Later stages will additionally want:
+#   arch (GARCH, Stage 5), linearmodels (Stage 6/7)
