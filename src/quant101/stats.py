@@ -129,3 +129,64 @@ def power_one_sample_prop(p0: float, p1: float, n: int, alpha: float = 0.05,
     upper = stats.norm.sf((crit_hi - p1) / se1)
     lower = stats.norm.cdf((crit_lo - p1) / se1) if two_sided else 0.0
     return float(upper + lower)
+
+
+# --------------------------------------------------------------------------- #
+# Multiple testing (Stage 3)
+# --------------------------------------------------------------------------- #
+
+def prob_any_significant(m: int, alpha: float = 0.05) -> float:
+    """P(at least one false positive) across m INDEPENDENT tests = 1-(1-α)^m.
+
+    The "family-wise error rate" if every null is true. Shows that with enough
+    implicit comparisons, finding 'something significant' is essentially certain.
+    """
+    return float(1 - (1 - alpha) ** m)
+
+
+def bonferroni(pvals, alpha: float = 0.05):
+    """Bonferroni: reject p_i if p_i <= α/m. Controls FWER. Returns (reject, p_adj)."""
+    p = np.asarray(pvals, dtype=float)
+    m = p.size
+    p_adj = np.minimum(p * m, 1.0)
+    return p_adj <= alpha, p_adj
+
+
+def holm(pvals, alpha: float = 0.05):
+    """Holm step-down: uniformly more powerful than Bonferroni, still FWER.
+
+    Sort ascending; threshold for the k-th smallest is α/(m-k). Returns
+    (reject, p_adj) in the ORIGINAL order.
+    """
+    p = np.asarray(pvals, dtype=float)
+    m = p.size
+    order = np.argsort(p)
+    p_sorted = p[order]
+    p_adj_sorted = np.empty(m)
+    running = 0.0
+    for k in range(m):
+        running = max(running, (m - k) * p_sorted[k])
+        p_adj_sorted[k] = min(running, 1.0)
+    p_adj = np.empty(m)
+    p_adj[order] = p_adj_sorted
+    return p_adj <= alpha, p_adj
+
+
+def benjamini_hochberg(pvals, alpha: float = 0.05):
+    """Benjamini–Hochberg: controls the false discovery rate (FDR).
+
+    Reject the k largest-ranked p's where p_(k) <= (k/m)·α. Returns
+    (reject, p_adj) in the ORIGINAL order. Less conservative than FWER methods —
+    the right tool when you can tolerate a known *fraction* of false discoveries.
+    """
+    p = np.asarray(pvals, dtype=float)
+    m = p.size
+    order = np.argsort(p)
+    p_sorted = p[order]
+    ranks = np.arange(1, m + 1)
+    # step-up adjusted p-values, enforced monotone from the top
+    p_adj_sorted = np.minimum.accumulate((p_sorted * m / ranks)[::-1])[::-1]
+    p_adj_sorted = np.minimum(p_adj_sorted, 1.0)
+    p_adj = np.empty(m)
+    p_adj[order] = p_adj_sorted
+    return p_adj <= alpha, p_adj
