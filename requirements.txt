@@ -7,5 +7,6 @@ matplotlib>=3.7
 statsmodels>=0.14
 yfinance>=0.2        # only needed if you re-fetch the real ^TWII series
 jupytext>=1.16       # to turn the *.py cell-scripts into .ipynb notebooks
+arch>=6.0            # GARCH (Stage 5); statsmodels supplies Markov-switching
 # Later stages will additionally want:
-#   arch (GARCH, Stage 5), linearmodels (Stage 6/7)
+#   linearmodels (Stage 6/7)
