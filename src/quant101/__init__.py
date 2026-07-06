@@ -4,6 +4,6 @@ Everything a gate asks you to compute lives here once, so the notebooks stay
 about *ideas* and the arithmetic is auditable in one place.
 """
 
-from . import stats, data, resample, timeseries  # noqa: F401
+from . import stats, data, resample, timeseries, pricing  # noqa: F401
 
-__all__ = ["stats", "data", "resample", "timeseries"]
+__all__ = ["stats", "data", "resample", "timeseries", "pricing"]

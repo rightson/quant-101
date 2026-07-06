@@ -8,5 +8,6 @@ statsmodels>=0.14
 yfinance>=0.2        # only needed if you re-fetch the real ^TWII series
 jupytext>=1.16       # to turn the *.py cell-scripts into .ipynb notebooks
 arch>=6.0            # GARCH (Stage 5); statsmodels supplies Markov-switching
-# Later stages will additionally want:
-#   linearmodels (Stage 6/7)
+# Stage 6 (asset pricing: market model / TSMOM / drift+momentum) uses statsmodels OLS —
+# no new dependency. Later stages may still add:
+#   linearmodels (panel factor models, optional)
