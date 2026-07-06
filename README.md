@@ -34,7 +34,8 @@ quant-101/
 │   ├── stats.py             #   Wilson/Wald/AC/CP CI、SE、t-CI、power(non-central t)
 │   ├── data.py              #   ^TWII 載入(真實 yfinance + 合成 fallback)、事件清單
 │   ├── resample.py          #   bootstrap / BCa / permutation / stationary bootstrap
-│   └── timeseries.py        #   effective sample size / regime-cluster test
+│   ├── timeseries.py        #   effective sample size / regime-cluster test
+│   └── pricing.py           #   market model / TSMOM / drift+momentum decomposition
 ├── data/                    # build_dataset.py + 說明(產出的 csv 被 .gitignore)
 ├── stage0_math_foundations/ # ✅ 已交付
 ├── stage1_estimation/       # ✅ 已交付
@@ -42,7 +43,8 @@ quant-101/
 ├── stage3_multiple_testing/ # ✅ 已交付(★ 另一個最高 ROI 站)
 ├── stage4_bootstrap/        # ✅ 已交付
 ├── stage5_timeseries_regime/ # ✅ 已交付
-└── stage6..9                # ⏳ 待交付(過一站、發下一站)
+├── stage6_asset_pricing/    # ✅ 已交付(drift + momentum 拆解)
+└── stage7..9                # ⏳ 待交付(過一站、發下一站)
 ```
 每站固定四個檔:`README.md`(該站總覽 + gate)、`lecture.md`(精講稿)、
 `exercises.md`(習題)、`solutions/`(可執行參考解)、`notebook_*.py`(notebook 樣板)。
@@ -57,7 +59,7 @@ quant-101/
 | 3 Multiple Testing ★ | ✅ | implicit comparisons 數量;multiple-testing 校正後 p 膨脹 | 5 DoF→**1024 比較**、`P(≥1)≈1.000`、Bonferroni 門檻 4.9e-5;grid search 384 組 raw≈α、BH 後 0 存活 |
 | 4 Bootstrap | ✅ | stationary bootstrap empirical p-value | 9 筆 BCa≈[−6.2%,+14.8%]、SE 膨脹 AR(1)×1.71、型態 empirical p≈0.32、overlapping naive CI 窄 3.9× |
 | 5 Time-Series/Regime | ✅ | Markov-switching 檢定事件群聚 | GARCH persistence≈0.97、overlapping 20d n_eff≈350(n/H)、**事件 82% 在高波動 regime vs 27%,p≈1.7e-7** |
-| 6 Asset Pricing | ⏳ | +4.7% 拆成 drift + momentum | — |
+| 6 Asset Pricing | ✅ | +4.7% 拆成 drift + momentum;殘差是否需額外故事 | market model β̂≈1.21/R²≈0.75;**cond +0.28% = drift +1.52% + mom +0.37% + resid −1.61%**、resid n_eff≈45、**t≈−1.4 CI 含 0**⇒無須洗盤;左尾不因創新高變兇 |
 | 7 Event Study | ⏳ | CAR/BHAR + 正確統計量 | — |
 | 8 EVT/Tail | ⏳ | 估 tail 所需 crisis 觀測量 | — |
 | 9 Decision/Sizing | ⏳ | signal/noise 終判 + fractional Kelly | — |
